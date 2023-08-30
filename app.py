@@ -1,19 +1,20 @@
-from flask import Flask, jsonify, request, json
+from flask import Flask, request, jsonify
 import easyocr
-
 
 app = Flask(__name__)
 reader = easyocr.Reader(['en'])  # Initialize the OCR reader with desired languages
 
 @app.route('/scan_pdf', methods=['POST'])
 def scan_pdf():
+    print(request.files)
+
     if 'file' not in request.files:
         return jsonify({"error": "No file part"})
-    
+   
     file = request.files['file']
     if file.filename == '':
         return jsonify({"error": "No selected file"})
-    
+   
     if file:
         text = extract_text_from_pdf(file)
         return jsonify({"text": text})
