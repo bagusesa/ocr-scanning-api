@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 import easyocr
 
 app = Flask(__name__)
-reader = easyocr.Reader(['id'])
+reader = easyocr.Reader(['en'])
 
 @app.route('/scan_pdf', methods=['POST'])
 def scan_pdf():
@@ -15,13 +15,13 @@ def scan_pdf():
    
     input_name = request.form.get('name')
     input_student_id = request.form.get('student_id')
-    input_university = request.form.get('university')
+    input_universities = request.form.get('university')
     
     if file:
         extracted_text = extract_text_from_pdf(file)
         
-        input_sections = [input_name, input_student_id, input_university]
-        input_sections = [section for section in input_sections if section is not None]
+        # Add spaces before and after each input section
+        input_sections = [f" {input_name} ", f" {input_student_id} ", f" {input_universities} "]
         
         matched_sections = count_matched_sections(extracted_text, input_sections)
         
@@ -39,7 +39,12 @@ def extract_text_from_pdf(pdf_file):
     return extracted_text
 
 def count_matched_sections(text, input_sections):
-    matched_sections = sum(1 for section in input_sections if section.lower() in text.lower())
+    # Convert both the input text and sections to lowercase for case-insensitive matching
+    text = text.lower()
+    input_sections = [section.lower() for section in input_sections]
+    
+    # Check for exact matches including spaces
+    matched_sections = sum(1 for section in input_sections if section in text)
     return matched_sections
 
 if __name__ == '__main__':
