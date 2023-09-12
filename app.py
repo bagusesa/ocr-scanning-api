@@ -16,21 +16,35 @@ def scan_pdf():
     input_name = request.form.get('name')
     input_student_id = request.form.get('student_id')
     input_universities = request.form.get('university')
+    input_publish_in = request.form.get('publish_in')
+    input_publish_en = request.form.get('publish_en')
     
     if file:
         extracted_text = extract_text_from_pdf(file)
         
         # Add spaces before and after each input section
         input_sections = [f" {input_name} ", f" {input_student_id} ", f" {input_universities} "]
-        
+             
         matched_sections = count_matched_sections(extracted_text, input_sections)
         
         if matched_sections >= 2:
             feedback = "positive"
         else:
             feedback = "negative"
-            
-        return jsonify({"text": extracted_text, "matched_sections": matched_sections, "feedback": feedback})
+        
+        # Add section on publishing date
+        # Check for exact matches including spaces
+        input_publish = [f" {input_publish_in} ", f" {input_publish_en} "] 
+
+        matched_publish = count_matched_sections(extracted_text, input_publish)
+
+        if matched_publish >= 1:
+            feedback_publish = "active"
+        else:
+            feedback_publish = "passive"
+
+        return jsonify({"text": extracted_text, "matched_sections": matched_sections, "feedback": feedback,
+                        "matched_publish": matched_publish, "feedback_publish": feedback_publish})
 
 def extract_text_from_pdf(pdf_file):
     image = pdf_file.read()
