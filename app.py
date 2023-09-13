@@ -1,8 +1,7 @@
 from flask import Flask, request, jsonify
-import easyocr
+from OCR import convert_pdf_to_text
 
 app = Flask(__name__)
-reader = easyocr.Reader(['en'])
 
 @app.route('/scan_pdf', methods=['POST'])
 def scan_pdf():
@@ -20,7 +19,8 @@ def scan_pdf():
     input_publish_en = request.form.get('publish_en')
     
     if file:
-        extracted_text = extract_text_from_pdf(file)
+        pdf_bytes = file.read()
+        extracted_text = convert_pdf_to_text(pdf_bytes)
         
         # Add spaces before and after each input section
         input_sections = [f" {input_name} ", f" {input_student_id} ", f" {input_universities} "]
@@ -46,11 +46,6 @@ def scan_pdf():
         return jsonify({"text": extracted_text, "matched_sections": matched_sections, "feedback": feedback,
                         "matched_publish": matched_publish, "feedback_publish": feedback_publish})
 
-def extract_text_from_pdf(pdf_file):
-    image = pdf_file.read()
-    results = reader.readtext(image)
-    extracted_text = ' '.join([result[1] for result in results])
-    return extracted_text
 
 def count_matched_sections(text, input_sections):
     # Convert both the input text and sections to lowercase for case-insensitive matching
