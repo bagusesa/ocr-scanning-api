@@ -15,8 +15,8 @@ def scan_pdf():
     input_name = request.form.get('name')
     input_student_id = request.form.get('student_id')
     input_universities = request.form.get('university')
-    input_publish_in = request.form.get('publish_in')
-    input_publish_en = request.form.get('publish_en')
+    input_publish_1 = request.form.get('publish_1')
+    input_publish_2 = request.form.get('publish_2')
     
     if file:
         pdf_bytes = file.read()
@@ -34,7 +34,7 @@ def scan_pdf():
         
         # Add section on publishing date
         # Check for exact matches including spaces
-        input_publish = [f" {input_publish_in} ", f" {input_publish_en} "] 
+        input_publish = [f" {input_publish_1} ", f" {input_publish_2} "] 
 
         matched_publish = count_matched_sections(extracted_text, input_publish)
 
