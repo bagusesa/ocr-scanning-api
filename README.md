@@ -66,7 +66,7 @@ Provide instructions for users on how to test your API using Postman. You can ou
 
 ## Installation
 
-1. Install Python > 3.11.5
+1. Install Python 3.11.5
 2. Clone this repository.
 3. Install the required dependencies using `pip install -r requirements.txt`.
 
