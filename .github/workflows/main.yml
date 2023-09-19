@@ -18,6 +18,9 @@ jobs:
       with:
         python-version: 3.11.5  # Choose your Python version
 
+    - name: Install Poppler
+      run: sudo apt-get install poppler-utils
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
