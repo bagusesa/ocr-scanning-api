@@ -23,7 +23,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Run Flask App
-      env:
-        PDF_FILE_PATH: pdf_files/dummy_suket.pdf
-      run: python app.py --pdf_path $PDF_FILE_PATH --name "John Doe" --student_id "1234567" --university "Universitas Brawijaya" --publish_1 "Agustus 2021" --publish_2 "September 2021"
+    - name: Make POST Request to Flask App
+      run: |
+        curl -X POST -F "file=@pdf_files/my_pdf_file.pdf" -F "name=John Doe" -F "student_id=1234567" -F "university=Universitas Brawijaya" -F "publish_1=Agustus 2021" -F "publish_2=September2021" http://127.0.0.1:5000/scan_pdf
