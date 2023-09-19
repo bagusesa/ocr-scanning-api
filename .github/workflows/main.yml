@@ -36,4 +36,14 @@ jobs:
 
     - name: Test Flask App Accessibility
       run: |
-        curl http://127.0.0.1:5000/scan_pdf  
+          curl -X POST \
+            -F "file=@$PDF_FILE_PATH" \
+            -F "name=$name" \
+            -F "student_id=$student_id" \
+            -F "university=$university" \
+            -F "publish_1=$publish_1" \
+            -F "publish_2=$publish_2" \
+            http://127.0.0.1:5000/scan_pdf
+
+
+
