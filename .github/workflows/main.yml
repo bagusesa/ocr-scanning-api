@@ -24,7 +24,6 @@ jobs:
         pip install -r requirements.txt
 
     - name: Run Flask App
-      run: python app.py 
       env:
         PDF_FILE_PATH: pdf_files/dummy_suket.pdf
         name: ${{ secrets.NAME }}
