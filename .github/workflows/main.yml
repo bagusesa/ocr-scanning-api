@@ -23,17 +23,17 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
+    - name: Run Flask App
+      env:
+        PDF_FILE_PATH: pdf_files/dummy_suket.pdf
+        name: ${{ secrets.NAME }}
+        student_id: ${{ secrets.STUDENT_ID }}
+        university: ${{ secrets.UNIVERSITY }}
+        publish_1: ${{ secrets.PUBLISH_1 }}
+        publish_2: ${{ secrets.PUBLISH_2 }}
+      run: |
+        python app.py --pdf_path $PDF_FILE_PATH &
+
     - name: Test Flask App Accessibility
       run: |
-        curl http://127.0.0.1:5000/scan_pdf
-
-    # - name: Run Flask App
-    #   env:
-    #     PDF_FILE_PATH: pdf_files/dummy_suket.pdf
-    #     name: ${{ secrets.NAME }}
-    #     student_id: ${{ secrets.STUDENT_ID }}
-    #     university: ${{ secrets.UNIVERSITY }}
-    #     publish_1: ${{ secrets.PUBLISH_1 }}
-    #     publish_2: ${{ secrets.PUBLISH_2 }}
-    #   run: |
-    #     python app.py --pdf_path $PDF_FILE_PATH
+        curl http://127.0.0.1:5000/scan_pdf  
