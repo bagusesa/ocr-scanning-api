@@ -41,7 +41,7 @@ jobs:
     - name: Test Flask App Accessibility
       run: |
         curl -X POST \
-          -F "file=@$pdf_files/dummy-suket.pdf" \
+          -F "file=@pdf_files/dummy-suket.pdf" \
           -F "name=John Doe" \
           -F "student_id=1234567" \
           -F "university=Universitas Brawijaya" \
