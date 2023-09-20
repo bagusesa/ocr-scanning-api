@@ -57,5 +57,5 @@ def count_matched_sections(text, input_sections):
     return matched_sections
 
 if __name__ == '__main__':
-    app.debug=True
+    app.debug=False
     app.run(host='0.0.0.0', port=5000)  # Listen on all available network interfaces
