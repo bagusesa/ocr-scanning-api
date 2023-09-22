@@ -40,9 +40,19 @@ publish_2: September 2023
   "feedback_publish": "active"
 }
 ```
-### Testing with Postman
 
-Provide instructions for users on how to test your API using Postman. You can outline the steps they should follow and include any necessary screenshots or examples. Here's a section you can include:
+## Installation
+
+1. Install Python 3.8
+2. Clone this repository.
+3. Install the required dependencies using `pip install -r requirements.txt`.
+
+## Running the API
+
+Run the API locally using:
+```bash
+python app.py
+```
 
 #### Testing with Postman
 
@@ -63,16 +73,3 @@ Provide instructions for users on how to test your API using Postman. You can ou
 5. Click the "Send" button to make the request.
 
 6. Review the response from the API, which will include the extracted text, matched sections, feedback, matched publishing date, and feedback for the publishing date.
-
-## Installation
-
-1. Install Python 3.8
-2. Clone this repository.
-3. Install the required dependencies using `pip install -r requirements.txt`.
-
-## Running the API
-
-Run the API locally using:
-```bash
-python app.py
-```
