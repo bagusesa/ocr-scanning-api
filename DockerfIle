@@ -1,5 +1,10 @@
-# Use an official Python runtime as a parent image
-FROM python:3.8
+# Use an official Ubuntu base image
+FROM ubuntu:20.04
+
+# Update the package list and install necessary packages
+RUN apt-get update && \
+    apt-get -y install python3 python3-pip poppler-utils && \
+    apt-get clean
 
 # Set the working directory to /app
 WORKDIR /app
@@ -8,13 +13,10 @@ WORKDIR /app
 COPY . /app
 
 # Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 # Make port 80 available to the world outside this container
 EXPOSE 80
 
-# Define environment variable
-ENV NAME World
-
 # Run app.py when the container launches
-CMD ["python", "app.py"]
+CMD ["python3", "app.py"]
