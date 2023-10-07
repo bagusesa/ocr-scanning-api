@@ -1,5 +1,7 @@
 from flask import Flask, request, jsonify
-from OCR import convert_pdf_to_text
+from ocr_app.pdf_utils import convert_pdf_to_text, count_matched_sections
+from ocr_app.config import get_indonesian_month
+import datetime
 
 app = Flask(__name__)
 
@@ -15,8 +17,16 @@ def scan_pdf():
     input_name = request.form.get('name')
     input_student_id = request.form.get('student_id')
     input_universities = request.form.get('university')
-    input_publish_1 = request.form.get('publish_1')
-    input_publish_2 = request.form.get('publish_2')
+    
+    # Get the current month and year in Bahasa Indonesia
+    current_date = datetime.datetime.now()
+    current_month = get_indonesian_month(current_date.strftime("%B"))
+    current_year = current_date.strftime("%Y")
+    
+    # Get the previous month and year in Bahasa Indonesia
+    previous_date = current_date - datetime.timedelta(days=current_date.day)
+    previous_month = get_indonesian_month(previous_date.strftime("%B"))
+    previous_year = previous_date.strftime("%Y")
     
     if file:
         pdf_bytes = file.read()
@@ -32,9 +42,10 @@ def scan_pdf():
         else:
             feedback = "negative"
         
-        # Add section on publishing date
-        # Check for exact matches including spaces
-        input_publish = [f" {input_publish_1} ", f" {input_publish_2} "] 
+        # Add sections for the current month and the previous month
+        input_publish_1 = f" {current_month} {current_year}"
+        input_publish_2 = f" {previous_month} {previous_year}"
+        input_publish = [input_publish_1, input_publish_2]
 
         matched_publish = count_matched_sections(extracted_text, input_publish)
 
@@ -45,16 +56,6 @@ def scan_pdf():
 
         return jsonify({"text": extracted_text, "matched_sections": matched_sections, "feedback": feedback,
                         "matched_publish": matched_publish, "feedback_publish": feedback_publish})
-
-
-def count_matched_sections(text, input_sections):
-    # Convert both the input text and sections to lowercase for case-insensitive matching
-    text = text.lower()
-    input_sections = [section.lower() for section in input_sections]
-    
-    # Check for exact matches including spaces
-    matched_sections = sum(1 for section in input_sections if section in text)
-    return matched_sections
 
 if __name__ == '__main__':
     app.debug=False

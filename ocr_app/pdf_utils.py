@@ -26,3 +26,9 @@ def convert_pdf_to_text(pdf_bytes):
         os.remove(image_path)
 
     return combined_text
+
+def count_matched_sections(text, input_sections):
+    text = text.lower()
+    input_sections = [section.lower() for section in input_sections]
+    matched_sections = sum(1 for section in input_sections if section in text)
+    return matched_sections

@@ -28,28 +28,19 @@ jobs:
     
     - name: Set File Permissions
       run: |
-        chmod +r pdf_files/dummy-suket.pdf
+        chmod +r pdf_files/dummy-suket-september.pdf
 
     - name: Run Flask App
-      # env:
-      #   PDF_FILE_PATH: pdf_files/dummy-suket.pdf
-      #   NAME: ${{ secrets.NAME }}
-      #   STUDENT_ID: ${{ secrets.STUDENT_ID }}
-      #   UNIVERSITY: ${{ secrets.UNIVERSITY }}
-      #   PUBLISH_1: ${{ secrets.PUBLISH_1 }}
-      #   PUBLISH_2: ${{ secrets.PUBLISH_2 }}
       run: |
         python app.py &
 
     - name: Test Flask App Accessibility
       run: |
         curl -X POST \
-          -F "file=@pdf_files/dummy-suket.pdf" \
+          -F "file=@pdf_files/dummy-suket-september.pdf" \
           -F "name=John Doe" \
-          -F "student_id=1234567" \
+          -F "student_id=123456" \
           -F "university=Universitas Brawijaya" \
-          -F "publish_1=Agustus 2021" \
-          -F "publish_2=September 2021" \
           http://127.0.0.1:5000/scan_pdf
 
 
