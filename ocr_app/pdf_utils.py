@@ -1,14 +1,14 @@
 import os
 from pdf2image import convert_from_bytes
-import easyocr
+from paddleocr import PaddleOCR
 
 def convert_pdf_to_text(pdf_bytes):
     images = convert_from_bytes(pdf_bytes)
 
-    combined_text = ""  # Initialize an empty string to store combined text
+    result_txt = []
 
     # Initialize EasyOCR
-    reader = easyocr.Reader(['en'])
+    reader = PaddleOCR(lang="id", use_gpu=False, show_log=False)
 
     for i, image in enumerate(images):
         # Save the image temporarily
@@ -16,16 +16,16 @@ def convert_pdf_to_text(pdf_bytes):
         image.save(image_path)
 
         # Perform OCR on the image
-        result = reader.readtext(image_path)
+        result = reader.ocr(image_path, cls=False, det=True, rec=True)
 
-        # Extract the text from OCR results and add it to the combined text
-        text = " ".join([item[1] for item in result])
-        combined_text += text + " "
+        result_txt.extend([" ".join([word_info[1][0] for word_info in line]) for line in result])
 
         # Remove the temporary image file
         os.remove(image_path)
 
-    return combined_text
+    result_txt = " ".join(result_txt)
+
+    return result_txt
 
 def count_matched_sections(text, input_sections):
     text = text.lower()
